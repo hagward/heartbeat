@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="bpm" id="bpm"></div>
+
+    <script>
+        var clientId = window.location.pathname;
+        var bpmDiv = document.getElementById('bpm');
+        var ws = new WebSocket('ws://localhost:8080/receiver' + clientId);
+
+        ws.onmessage = function(event) {
+            bpmDiv.innerText = event.data;
+        };
+    </script>
+</body>
+</html>
