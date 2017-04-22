@@ -22,19 +22,19 @@ wss.on('connection', ws => {
     if (url.startsWith('/sender')) {
         const clientId = url.substring(8)
 
-        console.log('sender connected with id %s', clientId)
+        console.log('sender connected with id "%s"', clientId)
 
         ws.on('message', message => {
             const client = clients[clientId]
             if (client) {
-                console.log('sending message: %s', message)
+                console.log('sending message: "%s"', message)
                 client.send(message)
             }
         })
     } else if (url.startsWith('/receiver')) {
         const clientId = url.substring(10)
 
-        console.log('receiver connected with id %s', clientId)
+        console.log('receiver connected with id "%s"', clientId)
 
         if (clientId) {
             clients[clientId] = ws
