@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Heartbeats</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .bpmContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .bpmNumber {
+            font-size: 8rem;
+        }
+        .bpmText {
+            font-size: 3rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="bpm" id="bpm"></div>
+    <div class="bpmContainer">
+        <span class="bpmNumber" id="bpm">66</span>
+        <span class="bpmText">bpm</span>
+    </div>
 
     <script>
         var clientId = window.location.pathname;
