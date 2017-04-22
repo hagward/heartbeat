@@ -9,9 +9,11 @@ app.get('/send/:clientId', (req, res) => {
     res.sendFile('send.html', { root: __dirname + '/public/' })
 })
 
-app.get(/.+/, (req, res) => {
+app.get('/receive/:clientId', (req, res) => {
     res.sendFile('index.html', { root: __dirname + '/public/' })
 })
+
+app.use('/node_modules', express.static('node_modules'))
 
 let connectionId = 0
 const clients = {}

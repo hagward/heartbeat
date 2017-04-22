@@ -18,7 +18,7 @@
         var intervalId = 0;
 
         function intervalFunction() {
-            var randomBpm = Math.floor(Math.random() * (160 - 40)) + 40;
+            var randomBpm = Math.floor(Math.random() * (80 - 50)) + 50;
             console.log('sending bpm %s', randomBpm);
             ws.send(randomBpm);
         }

@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: sans-serif;
-            background: #333;
+            /*background: #333;*/
         }
         .bpmContainer {
             position: absolute;
@@ -28,18 +28,56 @@
     </style>
 </head>
 <body>
-    <div class="bpmContainer">
+    <!--<div class="bpmContainer">
         <span class="bpmNumber" id="bpm">66</span>
         <span class="bpmText">bpm</span>
-    </div>
+    </div>-->
 
+    <canvas id="chart" width="800" height="600"></canvas>
+
+    <script src="../node_modules/chart.js/dist/Chart.js"></script>
     <script>
-        var clientId = window.location.pathname;
-        var bpmDiv = document.getElementById('bpm');
+        var clientId = window.location.pathname.substring(8);
+        // var bpmDiv = document.getElementById('bpm');
         var ws = new WebSocket('ws://localhost:8080/receiver' + clientId);
 
+        var ctx = document.getElementById('chart');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'BPM',
+                    fill: false,
+                    lineTension: 0.1,
+                    borderDashOffset: 0.0,
+                    borderCapStyle: 'butt',
+                    borderJoinStyle: 'miter',
+                    backgroundColor: 'red',
+                    borderColor: 'red',
+                    pointBorderColor: 'red',
+                    pointBackgroundColor: 'red',
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        });
+
         ws.onmessage = function(event) {
-            bpmDiv.innerText = event.data;
+            if (chart.data.labels.length > 10) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+
+            var bpm = event.data;
+            var currentTime = new Date();
+            currentTime = currentTime.getMinutes() + ':' + currentTime.getSeconds();
+
+            chart.data.labels.push(currentTime);
+            chart.data.datasets[0].data.push(bpm);
+            
+            chart.update();
         };
     </script>
 </body>
