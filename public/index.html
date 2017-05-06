@@ -28,7 +28,7 @@
     <script>
         var clientId = window.location.pathname.substring(8);
         var bpmSpan = document.getElementById('bpm');
-        var ws = new WebSocket('ws://localhost:8080/receiver' + clientId);
+        var ws = new WebSocket('ws://heartbeat.deg17.net:8080/receiver' + clientId);
 
         ws.onmessage = function(event) {
 	    bpmSpan.innerText = event.data;
