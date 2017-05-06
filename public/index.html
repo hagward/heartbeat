@@ -26,7 +26,7 @@
     <span class="bpm" id="bpm"></span>
 
     <script>
-        var clientId = window.location.pathname.substring(8);
+        var clientId = window.location.pathname;
         var bpmSpan = document.getElementById('bpm');
         var ws = new WebSocket('ws://heartbeat.deg17.net:8080/receiver' + clientId);
 

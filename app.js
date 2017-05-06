@@ -5,15 +5,15 @@ const app = express()
 const WebSocket = require('ws')
 const wss = new WebSocket.Server({ port: 8080 })
 
+app.use('/node_modules', express.static('node_modules'))
+
 app.get('/send/:clientId', (req, res) => {
     res.sendFile('send.html', { root: __dirname + '/public/' })
 })
 
-app.get('/receive/:clientId', (req, res) => {
+app.get('/:clientId', (req, res) => {
     res.sendFile('index.html', { root: __dirname + '/public/' })
 })
-
-app.use('/node_modules', express.static('node_modules'))
 
 let connectionId = 0
 const clients = {}
