@@ -4,80 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Heartbeats</title>
+    <title>Heartbeat</title>
     <style>
         body {
             font-family: sans-serif;
-            /*background: #333;*/
+            background: #333;
         }
-        .bpmContainer {
+        .bpm {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-shadow: 0 2px 1px #111;
             color: #EFF;
-            border-bottom: 4px solid red;
-        }
-        .bpmNumber {
-            font-size: 8rem;
-        }
-        .bpmText {
-            font-size: 3rem;
+	    font-size: 8rem;
         }
     </style>
 </head>
 <body>
-    <!--<div class="bpmContainer">
-        <span class="bpmNumber" id="bpm">66</span>
-        <span class="bpmText">bpm</span>
-    </div>-->
+    <span class="bpm" id="bpm"></span>
 
-    <canvas id="chart" width="800" height="600"></canvas>
-
-    <script src="../node_modules/chart.js/dist/Chart.js"></script>
     <script>
         var clientId = window.location.pathname.substring(8);
-        // var bpmDiv = document.getElementById('bpm');
+        var bpmSpan = document.getElementById('bpm');
         var ws = new WebSocket('ws://localhost:8080/receiver' + clientId);
 
-        var ctx = document.getElementById('chart');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'BPM',
-                    fill: false,
-                    lineTension: 0.1,
-                    borderDashOffset: 0.0,
-                    borderCapStyle: 'butt',
-                    borderJoinStyle: 'miter',
-                    backgroundColor: 'red',
-                    borderColor: 'red',
-                    pointBorderColor: 'red',
-                    pointBackgroundColor: 'red',
-                    pointRadius: 2
-                }]
-            },
-            options: {
-                responsive: false
-            }
-        });
-
         ws.onmessage = function(event) {
-            if (chart.data.labels.length > 10) {
-                chart.data.labels.shift();
-                chart.data.datasets[0].data.shift();
-            }
-
-            var bpm = event.data;
-            var currentTime = new Date();
-            currentTime = currentTime.getMinutes() + ':' + currentTime.getSeconds();
-
-            chart.data.labels.push(currentTime);
-            chart.data.datasets[0].data.push(bpm);
-            
-            chart.update();
+	    bpmSpan.innerText = event.data;
         };
     </script>
 </body>
