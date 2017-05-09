@@ -2,8 +2,9 @@
 
 const express = require('express')
 const app = express()
+const server = require('http').createServer(app)
 const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: 8080 })
+const wss = new WebSocket.Server({ server: server })
 
 const clients = {}
 const tokens = {}
@@ -65,4 +66,4 @@ wss.on('connection', ws => {
     }
 })
 
-app.listen(12345, _ => console.log('App listening on port 12345!'))
+server.listen(8080, _ => console.log('App listening on port 8080!'))
