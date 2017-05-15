@@ -19,7 +19,7 @@ app.get('/new', (req, res) => {
 })
 
 function generateToken() {
-    return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+    return Math.random().toString(36).substr(2, 10).toUpperCase()
 }
 
 app.get('/send/:token', (req, res) => {
