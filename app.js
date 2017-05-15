@@ -51,7 +51,11 @@ wss.on('connection', ws => {
         ws.on('message', message => {
             const client = clients[token]
             if (client) {
-                client.send(message, error => console.log(error))
+                client.send(message, error => {
+                    if (error) {
+                        console.log(error)
+                    }
+                })
             }
         })
     } else if (url.startsWith('/receiver')) {
