@@ -25,26 +25,6 @@
     <input type="color" id="colorFg">
     <span class="bpm" id="bpm"></span>
 
-    <script>
-        var token = window.location.pathname;
-        var bpmSpan = document.getElementById('bpm');
-        var ws = new WebSocket('ws://heartbeat.deg17.net:8080/receiver' + token);
-
-        ws.onmessage = function(event) {
-	        bpmSpan.innerText = event.data;
-        };
-
-        var colorInputBg = document.getElementById('colorBg');
-        colorInputBg.value = '#333333';
-        colorInputBg.addEventListener('input', function(event) {
-            document.body.style.background = event.target.value;
-        });
-
-        var colorInputFg = document.getElementById('colorFg');
-        colorInputFg.value = '#EFFEFF';
-        colorInputFg.addEventListener('input', function(event) {
-            bpmSpan.style.color = event.target.value;
-        });
-    </script>
+    <script src="./dist/bundle.js"></script>
 </body>
 </html>

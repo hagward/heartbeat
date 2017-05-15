@@ -1,6 +1,6 @@
 var webSocketAddress = process.env.NODE_ENV === 'production'
-        ? 'wss://heartbeat.deg17.net/'
-        : 'ws://localhost:8080/';
+        ? 'wss://heartbeat.deg17.net/receiver'
+        : 'ws://localhost:8080/receiver';
 var token = window.location.pathname;
 var ws = new WebSocket(webSocketAddress + token);
 

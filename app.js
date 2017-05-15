@@ -10,6 +10,7 @@ const clients = {}
 const tokens = {}
 
 app.use('/node_modules', express.static('node_modules'))
+app.use('/dist', express.static('public/dist'))
 
 app.get('/new', (req, res) => {
     const token = generateToken()
