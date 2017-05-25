@@ -9,18 +9,19 @@
 <body>
     <button id="sendButton">Send</button>
 
+    <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
     <script>
         var pathTokens = window.location.pathname.split('/');
         var clientId = pathTokens[pathTokens.length - 1];
-        var ws = new WebSocket('ws://localhost:8080/sender/' + clientId);
+        var socket = io('/send');
 
         var sendButton = document.getElementById('sendButton');
         var intervalId = 0;
 
         function intervalFunction() {
             var randomBpm = Math.floor(Math.random() * (80 - 50)) + 50;
-            console.log('sending bpm %s', randomBpm);
-            ws.send(randomBpm);
+            console.log('sending bpm %s to %s', randomBpm, clientId);
+            socket.emit('message', { room: clientId, data: randomBpm });
         }
 
         sendButton.onclick = function(event) {

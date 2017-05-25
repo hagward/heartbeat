@@ -1,8 +1,7 @@
 const express = require('express')
 const app = express()
 const server = require('http').createServer(app)
-const WebSocket = require('ws')
-const wss = new WebSocket.Server({ server: server })
+const io = require('socket.io')(server)
 
 const clients = {}
 const tokens = {}
@@ -22,6 +21,10 @@ function generateToken() {
     return Math.random().toString(36).substr(2, 10).toUpperCase()
 }
 
+app.get('/test', (req, res) => {
+    res.sendFile('test.html', { root: __dirname + '/public/' })
+})
+
 app.get('/send/:token', (req, res) => {
     const token = req.params.token
     if (tokens[token]) {
@@ -40,33 +43,18 @@ app.get('/:token', (req, res) => {
     }
 })
 
-wss.on('connection', ws => {
-    const url = ws.upgradeReq.url
+io.on('connection', socket => {
+    socket.on('room', room => {
+        console.log('got a listener in room %s', room)
+        socket.join(room)
+    })
+})
 
-    if (url.startsWith('/sender')) {
-        const token = url.substring(8)
-
-        console.log('sender connected with token: %s', token)
-
-        ws.on('message', message => {
-            const client = clients[token]
-            if (client) {
-                client.send(message, error => {
-                    if (error) {
-                        console.log(error)
-                    }
-                })
-            }
-        })
-    } else if (url.startsWith('/receiver')) {
-        const token = url.substring(10)
-
-        console.log('receiver connected with token: %s', token)
-
-        if (tokens[token]) {
-            clients[token] = ws
-        }
-    }
+io.of('/send').on('connection', socket => {
+    socket.on('message', data => {
+        console.log('got message %s for room %s', data.data, data.room)
+        io.sockets.in(data.room).emit('message', data.data)
+    })
 })
 
 server.listen(8080, _ => console.log('App listening on port 8080!'))
