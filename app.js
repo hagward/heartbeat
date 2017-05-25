@@ -3,57 +3,54 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
-const clients = {}
-const tokens = {}
+const rooms = {}
 
 app.use('/node_modules', express.static('node_modules'))
 app.use('/dist', express.static('public/dist'))
 
 app.get('/new', (req, res) => {
-    const token = generateToken()
+    const room = generateRoom()
 
-    tokens[token] = true
+    rooms[room] = true
 
-    res.send(token)
+    res.send(room)
 })
 
-function generateToken() {
+function generateRoom() {
     return Math.random().toString(36).substr(2, 10).toUpperCase()
 }
 
-app.get('/test', (req, res) => {
-    res.sendFile('test.html', { root: __dirname + '/public/' })
-})
-
-app.get('/send/:token', (req, res) => {
-    const token = req.params.token
-    if (tokens[token]) {
+app.get('/send/:room', (req, res) => {
+    const room = req.params.room
+    if (rooms[room]) {
         res.sendFile('send.html', { root: __dirname + '/public/' })
     } else {
-        res.send('Invalid token: ' + token)
+        res.send('Invalid room: ' + room)
     }
 })
 
-app.get('/:token', (req, res) => {
-    const token = req.params.token
-    if (tokens[token]) {
+app.get('/:room', (req, res) => {
+    const room = req.params.room
+    if (rooms[room]) {
         res.sendFile('index.html', { root: __dirname + '/public/' })
     } else {
-        res.send('Invalid token: ' + token)
+        res.send('Invalid room: ' + room)
     }
 })
 
 io.on('connection', socket => {
     socket.on('room', room => {
-        console.log('got a listener in room %s', room)
-        socket.join(room)
+        if (rooms[room]) {
+            socket.join(room)
+        } else {
+            socket.disconnect(true)
+        }
     })
 })
 
 io.of('/send').on('connection', socket => {
     socket.on('message', data => {
-        console.log('got message %s for room %s', data.data, data.room)
-        io.sockets.in(data.room).emit('message', data.data)
+        io.in(data.room).emit('message', data.data)
     })
 })
 

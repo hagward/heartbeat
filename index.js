@@ -1,20 +1,13 @@
-// var webSocketAddress = process.env.NODE_ENV === 'production'
-//         ? 'wss://heartbeat.deg17.net/receiver'
-//         : 'ws://localhost:8080/receiver';
-var token = window.location.pathname.substring(1);
-// var ws = new WebSocket(webSocketAddress + token);
-
+var room = window.location.pathname.substring(1);
 var bpmSpan = document.getElementById('bpm');
-
 var socket = io();
 
 socket.on('connect', function () {
-    socket.emit('room', token);
-});
+    socket.emit('room', room);
 
-socket.on('message', function (data) {
-    console.log('got a message: ' + data);
-    bpmSpan.innerText = data;
+    socket.on('message', function (data) {
+        bpmSpan.innerText = data;
+    });
 });
 
 var colorInputBg = document.getElementById('colorBg');
