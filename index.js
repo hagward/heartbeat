@@ -1,6 +1,7 @@
+var socket = io();
+
 var room = window.location.pathname.substring(1);
 var bpmSpan = document.getElementById('bpm');
-var socket = io();
 
 socket.on('connect', function () {
     socket.emit('room', room);
@@ -21,5 +22,3 @@ colorInputFg.value = '#EFFEFF';
 colorInputFg.addEventListener('input', function (event) {
     bpmSpan.style.color = event.target.value;
 });
-
-var socket = io();
