@@ -1,4 +1,4 @@
-var socket = io();
+var socket = require('socket.io-client')();
 
 var room = window.location.pathname.substring(1);
 var bpmSpan = document.getElementById('bpm');
