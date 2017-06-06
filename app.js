@@ -32,7 +32,7 @@ app.get('/send/:room', (req, res) => {
 app.get('/:room', (req, res) => {
     const room = req.params.room
     if (rooms[room]) {
-        res.sendFile('index.html', { root: __dirname + '/public/' })
+        res.sendFile('view.html', { root: __dirname + '/public/' })
     } else {
         res.send('Invalid room: ' + room)
     }
