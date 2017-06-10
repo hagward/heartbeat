@@ -9,14 +9,19 @@ app.use('/node_modules', express.static('node_modules'))
 app.use('/dist', express.static('public/dist'))
 
 app.get('/new', (req, res) => {
-    const room = generateRoom()
-
-    rooms[room] = true
-
-    res.send(room)
+    res.send(createNewRoom())
 })
 
-function generateRoom() {
+function createNewRoom() {
+    let newRoom = generateRoomName()
+    while (rooms[newRoom]) {
+        newRoom = generateRoomName()
+    }
+    rooms[newRoom] = true
+    return newRoom
+}
+
+function generateRoomName() {
     return Math.random().toString(36).substr(2, 6).toUpperCase()
 }
 
