@@ -17,7 +17,7 @@ app.get('/new', (req, res) => {
 })
 
 function generateRoom() {
-    return Math.random().toString(36).substr(2, 10).toUpperCase()
+    return Math.random().toString(36).substr(2, 6).toUpperCase()
 }
 
 app.get('/send/:room', (req, res) => {
