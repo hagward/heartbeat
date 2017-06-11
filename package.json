@@ -10,10 +10,10 @@
     "ws": "^2.2.3"
   },
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js -p",
+    "build": "node ./node_modules/webpack/bin/webpack.js -p",
+    "watch": "node ./node_modules/webpack/bin/webpack.js -w",
     "deploy": "npm run build && npm start",
     "dev": "npm run watch & npm start",
-    "start": "node app.js",
-    "watch": "./node_modules/webpack/bin/webpack.js -w"
+    "start": "node app.js"
   }
 }
