@@ -26,22 +26,26 @@ function generateRoomName() {
     return Math.random().toString(36).substr(2, 6).toUpperCase()
 }
 
-app.get('/send/:room', (req, res) => {
+app.get('/send/:room', (req, res, next) => {
     const room = req.params.room
     if (rooms[room]) {
         res.sendFile('send.html', { root: __dirname + '/public/' })
     } else {
-        res.send('Invalid room: ' + room)
+        next()
     }
 })
 
-app.get('/:room', (req, res) => {
+app.get('/:room', (req, res, next) => {
     const room = req.params.room
     if (rooms[room]) {
         res.sendFile('view.html', { root: __dirname + '/public/' })
     } else {
-        res.send('Invalid room: ' + room)
+        next()
     }
+})
+
+app.use((req, res) => {
+    res.status(404).sendFile('404.html', { root: __dirname + '/public/' })
 })
 
 io.on('connection', socket => {
