@@ -7,6 +7,7 @@ const rooms = {}
 
 app.use('/node_modules', express.static('node_modules'))
 app.use('/dist', express.static('public/dist'))
+app.use('/static', express.static('public/static'))
 
 app.get('/new', (req, res) => {
     res.send(createNewRoom())
