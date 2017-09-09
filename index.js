@@ -18,14 +18,20 @@ heartSvg.addEventListener('animationiteration', function () {
     heartSvg.style.animationDuration = animationDuration;
 });
 
-var colorInputBg = document.getElementById('colorBg');
-colorInputBg.value = '#333333';
-colorInputBg.addEventListener('input', function (event) {
+var colorInputBgBody = document.getElementById('colorBgBody');
+colorInputBgBody.value = '#333333';
+colorInputBgBody.addEventListener('input', function (event) {
     document.body.style.background = event.target.value;
 });
 
-var colorInputFg = document.getElementById('colorFg');
-colorInputFg.value = '#EFFEFF';
-colorInputFg.addEventListener('input', function (event) {
+var colorInputFgHeart = document.getElementById('colorFgHeart');
+colorInputFgHeart.value = '#FF0000';
+colorInputFgHeart.addEventListener('input', function (event) {
+    heartSvg.style.fill = event.target.value;
+});
+
+var colorInputFgText = document.getElementById('colorFgText');
+colorInputFgText.value = '#EFFEFF';
+colorInputFgText.addEventListener('input', function (event) {
     bpmSpan.style.color = event.target.value;
 });
