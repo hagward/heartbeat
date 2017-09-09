@@ -5,9 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Send</title>
+    <link rel="stylesheet" href="../static/heartbeat.css">
+    <style>
+        body {
+            margin: 0;
+        }
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .content {
+            text-align: center;
+        }
+        .value {
+            font-size: 4rem;
+        }
+    </style>
 </head>
 <body>
-    <button id="sendButton">Send</button>
+    <div class="container">
+        <div class="content">
+            <div class="value" id="value">150</div>
+            <div><input type="range" class="range" id="range" min="1" max="300"></div>
+            <div><input type="button" class="send" id="send" value="Start"></div>
+        </div>
+    </div>
 
     <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
     <script>
@@ -15,22 +40,30 @@
         var clientId = pathTokens[pathTokens.length - 1];
         var socket = io('/send');
 
-        var sendButton = document.getElementById('sendButton');
-        var intervalId = 0;
+        var value = document.getElementById('value');
+        var range = document.getElementById('range');
+        var sendButton = document.getElementById('send');
+
+        range.oninput = function (event) {
+            value.innerText = event.target.value;
+        };
 
         function intervalFunction() {
-            var randomBpm = Math.floor(Math.random() * (80 - 50)) + 50;
-            console.log('sending bpm %s to %s', randomBpm, clientId);
-            socket.emit('message', { room: clientId, data: randomBpm });
+            console.log('sending %s to %s', value.innerText, clientId);
+            socket.emit('message', { room: clientId, data: value.innerText });
         }
 
-        sendButton.onclick = function(event) {
-            if (intervalId) {
+        var intervalId = 0;
+        var sending = false;
+        sendButton.onclick = function (event) {
+            if (sending) {
                 clearInterval(intervalId);
-                intervalId = 0;
+                sendButton.value = 'Start';
             } else {
                 intervalId = setInterval(intervalFunction, 1000);
+                sendButton.value = 'Stop';
             }
+            sending = !sending;
         };
     </script>
 </body>
