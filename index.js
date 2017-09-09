@@ -10,7 +10,7 @@ socket.on('connect', function () {
 
     socket.on('message', function (data) {
         bpmSpan.innerText = data;
-        animationDuration = (60/Math.round(bpmSpan.innerText)) + 's';
+        animationDuration = (60/data).toPrecision(3) + 's';
     });
 });
 
