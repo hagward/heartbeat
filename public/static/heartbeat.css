@@ -14,7 +14,7 @@ body {
 .beating-heart {
     animation: pulse 1s ease infinite;
     fill: red;
-    margin-right: 2rem;
+    margin-right: 1rem;
     width: 4rem;
 }
 .broken-heart {
