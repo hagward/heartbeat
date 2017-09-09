@@ -3,14 +3,19 @@ var socket = require('socket.io-client')();
 var room = window.location.pathname.substring(1);
 var heartSvg = document.getElementById('heart');
 var bpmSpan = document.getElementById('bpm');
+var animationDuration;
 
 socket.on('connect', function () {
     socket.emit('room', room);
 
     socket.on('message', function (data) {
         bpmSpan.innerText = data;
-        heartSvg.style.animationDuration = (60/Math.round(data)) + 's';
+        animationDuration = (60/Math.round(bpmSpan.innerText)) + 's';
     });
+});
+
+heartSvg.addEventListener('animationiteration', function () {
+    heartSvg.style.animationDuration = animationDuration;
 });
 
 var colorInputBg = document.getElementById('colorBg');
